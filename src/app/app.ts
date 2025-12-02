@@ -1,12 +1,23 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+import { Header } from './component/header/header';
+import { Table } from './component/table/table';
+import { ModalAdd } from './component/modal-add/modal-add';
+import {ModalAddService} from './service/ModalAddService';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [
+    CommonModule,
+    Header,
+    Table,
+    ModalAdd,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('torres-sentinela');
+  constructor(public modalAdd: ModalAddService) {}
 }

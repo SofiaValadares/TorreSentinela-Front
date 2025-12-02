@@ -1,0 +1,47 @@
+<div class="overlay">
+  <div class="modal">
+    <h2>Adicionar Torre</h2>
+    <form class="form">
+      <mat-form-field class="input-field">
+        <mat-label>Id da Torre</mat-label>
+        <input matInput
+               [value]="modalAdd.torreIP()"
+               (input)="modalAdd.torreIP.set($any($event.target).value)"
+        >
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Latitude</mat-label>
+        <input matInput
+               type="number"
+               [value]="modalAdd.latitude()"
+               (input)="modalAdd.latitude.set($any($event.target).valueAsNumber)"
+        >
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Longitude</mat-label>
+        <input matInput
+               type="number"
+               [value]="modalAdd.longitude()"
+               (input)="modalAdd.longitude.set($any($event.target).valueAsNumber)"
+        >
+      </mat-form-field>
+    </form>
+
+    <div class="actions">
+      <button
+        (click)="closeModalAddTorre()"
+      >
+        <h3>Cancelar</h3>
+      </button>
+      <button
+        [disabled]="addDisable()"
+        (click)="onClickAddTorre()"
+      >
+        <h3>Adicionar</h3>
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,69 @@
+.componente {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80vw;
+  gap: 20px;
+}
+
+.componente .title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  button {
+    background: darkslategray;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+
+    h3 {
+      color: white;
+      margin: 0;
+    }
+  }
+
+  button:disabled {
+    background: dimgray;
+  }
+
+  button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+}
+
+.componente .table {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: 100%;
+
+  gap: 1px;
+  border: 2px solid darkslategray;
+  background: darkslategray;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.componente .table .cell,
+.componente .table .header {
+  background: darkseagreen;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  min-height: 40px;
+}
+
+.componente .table .header {
+  background: darkslategray;
+
+  h3 {
+    color: white;
+  }
+}
+
+

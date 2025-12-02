@@ -1,1 +1,43 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  background: darkseagreen;
+  font-family: 'Lexend', sans-serif;
+  color: #262b26;
+}
+
+/* Títulos e texto padrão */
+h1, h2, h3, p {
+  font-family: 'Lexend', sans-serif;
+  margin: 0;
+}
+
+/* H1 — maior e bold */
+h1 {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+/* H2 — médio e bold */
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* H3 — menor e bold */
+h3 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* P — mesmo tamanho do H3 */
+p {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,0 +1,89 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+
+  width: 70%;
+  height: 60%;
+  padding: 50px 20px;
+
+  background: darkseagreen;
+  border-radius: 10px;
+  border: 2px solid darkslategray;
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+  }
+
+  .input-field{
+    width: 100%;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+
+    width: 100%;
+    gap: 20px;
+  }
+
+  button:first-child {
+    background: transparent;
+
+    h3 {
+      color: black;
+    }
+  }
+
+  button {
+    background: darkslategray;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+
+    h3 {
+      color: white;
+      margin: 0;
+    }
+  }
+
+  button:disabled {
+    background: dimgray;
+  }
+
+  button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+
+  button:first-child:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+}

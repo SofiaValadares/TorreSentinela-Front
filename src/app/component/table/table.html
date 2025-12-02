@@ -1,0 +1,56 @@
+<div class="componente">
+  <div class="title">
+    <h2>Tabela Torres</h2>
+
+    <button (click)="openModalAddTorre()">
+      <h3>+ ADICIONAR TORRE</h3>
+    </button>
+  </div>
+
+  <div class="table">
+    <div class="header">
+      <h3>TORRE IP</h3>
+    </div>
+    <div class="header">
+      <h3>LATITUDE</h3>
+    </div>
+    <div class="header">
+      <h3>LONGITUDE</h3>
+    </div>
+    <div class="header">
+      <h3>DIAS SEM CHUVA</h3>
+    </div>
+
+    @if (torresSentinela.listaTorres().length > 0) {
+      @for (torre of torresSentinela.listaTorres(); track $index) {
+        <div class="cell">
+          <p>{{torre.torreIP}}</p>
+        </div>
+        <div class="cell">
+          <p>{{torre.latitude}}</p>
+        </div>
+        <div class="cell">
+          <p>{{torre.longitude}}</p>
+        </div>
+        <div class="cell">
+          <p>{{ torre.tempoSemChuva != null ? torre.tempoSemChuva + 's' : 'carregando...' }}</p>
+        </div>
+      }
+    } @else {
+      <div class="cell">
+        <p>--</p>
+      </div>
+      <div class="cell">
+        <p>--</p>
+      </div>
+      <div class="cell">
+        <p>--</p>
+      </div>
+      <div class="cell">
+        <p>--</p>
+      </div>
+    }
+
+
+  </div>
+</div>
