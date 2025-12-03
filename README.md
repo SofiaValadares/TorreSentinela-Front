@@ -1,59 +1,124 @@
-# TorresSentinela
+# 🛰️ Torres Sentinela – Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.7.
+Interface web do projeto **Torres Sentinela**, um sistema de monitoramento voltado para a coleta e visualização de dados de precipitação (chuvas).  
 
-## Development server
+Este frontend foi desenvolvido em **Angular** e tem como objetivo exibir, de forma clara e intuitiva, as informações coletadas pelas torres do projeto, permitindo acompanhar os dados em tempo quase real.
 
-To start a local development server, run:
+> ℹ️ Para entender o contexto completo do projeto (objetivo, aplicação e arquitetura geral), consulte o site oficial do Projeto Sentinela e o repositório responsável pela parte de coleta de dados (hardware + firmware).
+
+---
+
+## 🌐 Sobre este repositório
+
+Este repositório contém **apenas a interface web** (frontend) do sistema **Torres Sentinela**.
+
+Aqui você encontrará:
+
+- Páginas e componentes de visualização dos dados de precipitação;
+- Lógica de apresentação e organização das informações retornadas pelo backend;
+- Estrutura base em Angular para evolução futura da aplicação.
+
+O backend / firmware responsável pela coleta dos dados é mantido em outro repositório.
+
+---
+
+## 🧰 Tecnologias utilizadas
+
+- [Angular CLI](https://angular.dev/) (versão 20.3.7)
+- TypeScript
+- HTML / CSS / SCSS
+
+---
+
+## 🚀 Como executar o projeto
+
+### 1. Pré-requisitos
+
+- Node.js instalado  
+- Angular CLI instalado globalmente (opcional, mas recomendado)
+
+### 2. Instalar dependências
+
+Na pasta do projeto, execute:
+
+```bash
+npm install
+```
+### 3. Subir o servidor de desenvolvimento
+
+Execute:
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Depois, acesse no navegador: `http://localhost:4200/`
 
-## Code scaffolding
+A aplicação será recarregada automaticamente sempre que você alterar algum arquivo fonte.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
+
+## 🏗️ Scripts úteis (Angular CLI)
+
+**Gerar um novo componente**
 
 ```bash
-ng generate component component-name
+ng generate component nome-do-componente
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Para ver todos os esquemas disponíveis (components, directives, pipes, etc.):
 
 ```bash
 ng generate --help
 ```
 
-## Building
-
-To build the project run:
+**Build de produção**
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Os artefatos gerados ficarão na pasta `dist/`, já otimizados para desempenho.
 
-## Running unit tests
+---
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 🧪 Testes
+
+### Testes unitários
+
+Para executar os testes unitários com o Karma:
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### Testes end-to-end (e2e)
 
 ```bash
 ng e2e
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+> **Nota:** O Angular CLI não vem com um framework e2e configurado por padrão. Você pode escolher a solução que melhor se adequar ao projeto.
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🔗 Integração com o restante do projeto
+
+Este frontend foi pensado para consumir os dados coletados pelas **Torres Sentinela** (módulo de hardware/firmware).
+
+> ⚠️ **Atenção:** Certifique-se de que o backend / serviço responsável pela disponibilização dos dados esteja configurado e em execução para que os gráficos e telas funcionem corretamente.
+
+---
+
+## 👥 Desenvolvedores
+
+- Sofia Valadares
+- Guilherme Silveira
+
+---
+
+## 📚 Recursos adicionais
+
+Para mais detalhes sobre comandos e possibilidades do Angular CLI, acesse a documentação oficial:
+
+[Angular CLI Documentation](https://angular.dev/tools/cli)
