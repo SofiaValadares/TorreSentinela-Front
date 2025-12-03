@@ -37,7 +37,7 @@
 
 .componente .table {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   width: 100%;
 
   gap: 1px;
@@ -48,6 +48,7 @@
 }
 
 .componente .table .cell,
+.componente .table .cellButton,
 .componente .table .header {
   background: darkseagreen;
   display: flex;
@@ -56,6 +57,8 @@
   box-sizing: border-box;
   padding: 10px 12px;
   min-height: 40px;
+
+
 }
 
 .componente .table .header {
@@ -66,4 +69,45 @@
   }
 }
 
+.componente .table .cellButton {
+  justify-content: end;
+  background: darkseagreen;
+  gap: 10px;
+
+  button {
+    border: none;
+    border-radius: 8px;
+
+  }
+
+  button:hover {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .details {
+    background: lightblue;
+  }
+
+  .details:hover,
+  .details:disabled {
+    background: mediumslateblue;
+    color: lightgray !important;
+  }
+
+  .delete {
+    background: indianred;
+    color: white !important;
+  }
+
+  .delete:hover,
+  .delete:disabled {
+    background: darkred;
+    color: lightgray !important;
+  }
+}
 

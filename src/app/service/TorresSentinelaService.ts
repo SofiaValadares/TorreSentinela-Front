@@ -1,29 +1,26 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-export interface TorreSentinelaData {
-  torreIP: string;
-  latitude: number;
-  longitude: number;
-  tempoSemChuva?: number;
-}
+import { TorreSentinelaData } from '../model/TorreSentinela';
+import {TorreDetalhesHistoryService} from './TorreDetalhesHistoryService';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TorresSentinelaService {
-  // lista de torres
   listaTorres: WritableSignal<TorreSentinelaData[]> = signal<TorreSentinelaData[]>([]);
 
-  // guarda os intervalos ativos (um por torre)
   private pollingTimers = new Map<string, number>();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private detalhesHistory: TorreDetalhesHistoryService
+  ) {}
 
   addTorre(torre: TorreSentinelaData): void {
     this.listaTorres.update(listaAtual => [...listaAtual, torre]);
 
-    // já começa a chamar a API dessa torre a cada 2 segundos
+    this.detalhesHistory.registrarLeituraTorre(torre);
+
     this.startPollingTorre(torre.torreIP);
   }
 
@@ -31,12 +28,13 @@ export class TorresSentinelaService {
     this.listaTorres.update(listaAtual =>
       listaAtual.filter(t => t.torreIP !== torreIP)
     );
+
+    this.detalhesHistory.removerTorrePorIp(torreIP);
+
     this.stopPollingTorre(torreIP);
   }
 
-  /** 🔄 Inicia o polling da API para uma torre específica */
   private startPollingTorre(torreIP: string): void {
-    // se já tiver um timer pra essa torre, não cria outro
     if (this.pollingTimers.has(torreIP)) {
       return;
     }
@@ -48,13 +46,24 @@ export class TorresSentinelaService {
         )
         .subscribe({
           next: (res) => {
+            let torreAtualizada: TorreSentinelaData | null = null;
+
             this.listaTorres.update(lista =>
-              lista.map(torre =>
-                torre.torreIP === torreIP
-                  ? { ...torre, tempoSemChuva: res.tempo_sem_chuva }
-                  : torre
-              )
+              lista.map(torre => {
+                if (torre.torreIP === torreIP) {
+                  torreAtualizada = {
+                    ...torre,
+                    tempoSemChuva: res.tempo_sem_chuva
+                  };
+                  return torreAtualizada;
+                }
+                return torre;
+              })
             );
+
+            if (torreAtualizada) {
+              this.detalhesHistory.registrarLeituraTorre(torreAtualizada);
+            }
           },
           error: (err) => {
             console.error('Erro ao buscar tempo_sem_chuva da torre', torreIP, err);
@@ -65,7 +74,6 @@ export class TorresSentinelaService {
     this.pollingTimers.set(torreIP, intervalId);
   }
 
-  /** 🧹 Para o polling de uma torre específica */
   private stopPollingTorre(torreIP: string): void {
     const intervalId = this.pollingTimers.get(torreIP);
     if (intervalId != null) {
@@ -74,7 +82,6 @@ export class TorresSentinelaService {
     }
   }
 
-  /** 🧹 Para tudo (se você quiser chamar ao deslogar, por exemplo) */
   stopAllPolling(): void {
     this.pollingTimers.forEach((id) => clearInterval(id));
     this.pollingTimers.clear();

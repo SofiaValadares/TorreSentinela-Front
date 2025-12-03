@@ -1,0 +1,20 @@
+<div class="overlay">
+  <div class="modal">
+    <h2>Deletar torre IP: {{modalDelete.torreIP()}}</h2>
+
+    <p>Tem certesa que deseja remover essa torre e todos os dados ligados a ela?</p>
+
+    <div class="actions">
+      <button
+        (click)="onCloseModalDelete()"
+      >
+        <h3>Cancelar</h3>
+      </button>
+      <button
+        (click)="onConfirmDelete()"
+      >
+        <h3>Deletar</h3>
+      </button>
+    </div>
+  </div>
+</div>

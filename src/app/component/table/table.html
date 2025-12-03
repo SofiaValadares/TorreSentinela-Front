@@ -20,6 +20,8 @@
     <div class="header">
       <h3>DIAS SEM CHUVA</h3>
     </div>
+    <div class="header">
+    </div>
 
     @if (torresSentinela.listaTorres().length > 0) {
       @for (torre of torresSentinela.listaTorres(); track $index) {
@@ -33,7 +35,15 @@
           <p>{{torre.longitude}}</p>
         </div>
         <div class="cell">
-          <p>{{ torre.tempoSemChuva != null ? torre.tempoSemChuva + 's' : 'carregando...' }}</p>
+          <p>{{ torre.tempoSemChuva != null ? formatarDataSimples(torre.tempoSemChuva) : 'carregando...' }}</p>
+        </div>
+        <div class="cellButton">
+          <button class="details" (click)="openModalDetailsTorre(torre)">
+            <mat-icon aria-hidden="false" aria-label="Icon Delete" fontIcon="menu"></mat-icon>
+          </button>
+          <button class="delete" (click)="onClickRemoveTorre(torre.torreIP)">
+            <mat-icon aria-hidden="false" aria-label="Icon Delete" fontIcon="delete"></mat-icon>
+          </button>
         </div>
       }
     } @else {
@@ -48,6 +58,14 @@
       </div>
       <div class="cell">
         <p>--</p>
+      </div>
+      <div class="cellButton">
+        <button class="details" disabled>
+          <mat-icon aria-hidden="false" aria-label="Icon Delete" fontIcon="menu"></mat-icon>
+        </button>
+        <button class="delete" disabled>
+          <mat-icon aria-hidden="false" aria-label="Icon Delete" fontIcon="delete"></mat-icon>
+        </button>
       </div>
     }
 

@@ -1,0 +1,39 @@
+<div class="overlay">
+  <div class="modal">
+    <div class="header">
+      <h2>Detalhes da torre de IP {{ modalDetails.torre()?.torreIP }}</h2>
+
+      <button (click)="onClose()">
+        <mat-icon aria-hidden="false" aria-label="Icon Close" fontIcon="close"></mat-icon>
+      </button>
+    </div>
+
+    <p>Monitorando desde {{ getDataAddString() }}, com um total de {{ getIncendios().length }} chuvas já registradas.</p>
+
+    @if (detalhesTorre) {
+      <div class="grafico-container">
+        <h3>Incêndios detectados</h3>
+
+        @if (getIncendios().length === 0) {
+          <p class="sem-dados">Nenhum incêndio registrado ainda.</p>
+        } @else {
+          <p class="sem-dados">{{ getIncendiosRecentes().length }} chuvas mais recentes.</p>
+          <div class="grafico-incendios">
+            @for (incendio of getIncendiosRecentes(); track incendio.data) {
+              <div
+                class="barra-incendio"
+                [style.height.%]="getAlturaBarra(incendio.duracao)"
+              >
+                <h3>{{ formatarTempo(incendio.duracao) }}</h3>
+
+                <div class="barra-cor">
+                  <p>{{ formatarData(incendio.data) }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
