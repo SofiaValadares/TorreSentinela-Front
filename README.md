@@ -111,9 +111,33 @@ Este frontend foi pensado para consumir os dados coletados pelas **Torres Sentin
 ---
 
 ## 👥 Desenvolvedores
-
-- Sofia Valadares
-- Guilherme Silveira
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/LuizaCalife">
+        <img src="https://avatars.githubusercontent.com/u/109395661?v=4" width="100px;" alt="Maria Luiza Calife"/><br>
+        <sub><b>Maria Luiza Calife</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/dan-albuquerque">
+        <img src="https://avatars.githubusercontent.com/u/114592376?v=4" width="100px;" alt="Foto Danilo Albuquerque"/><br>
+        <sub><b>Danilo Albuquerque</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/guiga-sa">
+        <img src="https://avatars.githubusercontent.com/u/123979639?v=4" width="100px;" alt="Foto Guilherme Silveira"/><br>
+        <sub><b>Guilherme Silveira</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/SofiaValadares">
+        <img src="https://avatars.githubusercontent.com/u/113111708?v=4" width="100px;" alt="Foto Sofia Valadares"/><br>
+        <sub><b>Sofia Valadares</b></sub>
+      </a>
+    </td>
+</table>
 
 ---
 
