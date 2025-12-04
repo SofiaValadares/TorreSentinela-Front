@@ -8,26 +8,26 @@
       </button>
     </div>
 
-    <p>Monitorando desde {{ getDataAddString() }}, com um total de {{ getIncendios().length }} chuvas já registradas.</p>
+    <p>Monitorando desde {{ getDataAddString() }}, com um total de {{ getChuvas().length }} chuvas já registradas.</p>
 
     @if (detalhesTorre) {
       <div class="grafico-container">
-        <h3>Incêndios detectados</h3>
+        <h3>Chuvas detectadas</h3>
 
-        @if (getIncendios().length === 0) {
-          <p class="sem-dados">Nenhum incêndio registrado ainda.</p>
+        @if (getChuvas().length === 0) {
+          <p class="sem-dados">Nenhuma chuva registrada ainda.</p>
         } @else {
-          <p class="sem-dados">{{ getIncendiosRecentes().length }} chuvas mais recentes.</p>
+          <p class="sem-dados">{{ getChuvasRecentes().length }} chuvas mais recentes.</p>
           <div class="grafico-incendios">
-            @for (incendio of getIncendiosRecentes(); track incendio.data) {
+            @for (chuva of getChuvasRecentes(); track chuva.data) {
               <div
                 class="barra-incendio"
-                [style.height.%]="getAlturaBarra(incendio.duracao)"
+                [style.height.%]="getAlturaBarra(chuva.duracao)"
               >
-                <h3>{{ formatarTempo(incendio.duracao) }}</h3>
+                <h3>{{ formatarTempo(chuva.duracao) }}</h3>
 
                 <div class="barra-cor">
-                  <p>{{ formatarData(incendio.data) }}</p>
+                  <p>{{ formatarData(chuva.data) }}</p>
                 </div>
               </div>
             }

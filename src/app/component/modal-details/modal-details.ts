@@ -47,11 +47,11 @@ export class ModalDetails {
     return formatarDataHoraFromMs(this.detalhesTorre.dataAdd);
   }
 
-  getIncendios(): TorreSentinelaChuva[] {
+  getChuvas(): TorreSentinelaChuva[] {
     return this.detalhesTorre?.historyChuvas ?? [];
   }
 
-  getIncendiosRecentes() {
+  getChuvasRecentes() {
     if (!this.detalhesTorre) return [];
     return [...this.detalhesTorre.historyChuvas]
       .sort((a, b) => b.data - a.data)
@@ -59,9 +59,9 @@ export class ModalDetails {
   }
 
   getMaxDuracao(): number {
-    const incendios = this.getIncendiosRecentes();
-    if (!incendios.length) return 0;
-    return incendios.reduce((max, inc) => inc.duracao > max ? inc.duracao : max, 0);
+    const chuvas = this.getChuvasRecentes();
+    if (!chuvas.length) return 0;
+    return chuvas.reduce((max, inc) => inc.duracao > max ? inc.duracao : max, 0);
   }
 
   getAlturaBarra(duracao: number): number {

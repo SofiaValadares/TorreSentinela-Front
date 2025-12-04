@@ -27,8 +27,8 @@ export class TorreDetalhesHistoryService {
           torreSentinela: torre,
           dataAdd: agora,
           historyChuvas: [],
-          chovendoAgora: tempoSemChuva === 0,
-          inicioChuvaAtual: tempoSemChuva === 0 ? agora : null
+          chovendoAgora: false,
+          inicioChuvaAtual: null
         };
 
         return [...listaAtual, novoHistorico];
