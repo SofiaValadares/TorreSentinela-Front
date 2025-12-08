@@ -10,30 +10,70 @@
 
     <p>Monitorando desde {{ getDataAddString() }}, com um total de {{ getChuvas().length }} chuvas já registradas.</p>
 
+    <div class="abas-tables">
+      <button [disabled]="isTabelaAtiva(tabelas.CHUVA)" (click)="onClickChuvas()">
+        <h3>CHUVAS</h3>
+      </button>
+      <button [disabled]="isTabelaAtiva(tabelas.SECA)" (click)="onClickSecas()">
+        <h3>SECAS</h3>
+      </button>
+    </div>
+
+
     @if (detalhesTorre) {
-      <div class="grafico-container">
-        <h3>Chuvas detectadas</h3>
+      @if (isTabelaAtiva(tabelas.CHUVA)) {
+        <div class="grafico-container">
+          <h3>Chuvas detectadas</h3>
 
-        @if (getChuvas().length === 0) {
-          <p class="sem-dados">Nenhuma chuva registrada ainda.</p>
-        } @else {
-          <p class="sem-dados">{{ getChuvasRecentes().length }} chuvas mais recentes.</p>
-          <div class="grafico-incendios">
-            @for (chuva of getChuvasRecentes(); track chuva.data) {
-              <div
-                class="barra-incendio"
-                [style.height.%]="getAlturaBarra(chuva.duracao)"
-              >
-                <h3>{{ formatarTempo(chuva.duracao) }}</h3>
+          @if (getChuvas().length === 0) {
+            <p class="sem-dados">Nenhuma chuva registrada ainda.</p>
+          } @else {
+            <p class="sem-dados">{{ getChuvasRecentes().length }} chuvas mais recentes.</p>
+            <div class="grafico-incendios">
+              @for (chuva of getChuvasRecentes(); track chuva.data) {
+                <div
+                  class="barra-incendio"
+                  [style.height.%]="getAlturaBarra(chuva.duracao)"
+                >
+                  <h3>{{ formatarTempo(chuva.duracao) }}</h3>
 
-                <div class="barra-cor">
+                  <div class="barra-cor">
+                  </div>
+
                   <p>{{ formatarData(chuva.data) }}</p>
                 </div>
-              </div>
-            }
-          </div>
-        }
-      </div>
+              }
+            </div>
+          }
+        </div>
+      }
+
+      @if (isTabelaAtiva(tabelas.SECA)) {
+        <div class="grafico-container">
+          <h3>Secas detectadas</h3>
+
+          @if (getSecas().length === 0) {
+            <p class="sem-dados">Nenhuma seca registrada ainda.</p>
+          } @else {
+            <p class="sem-dados">{{ getSecasRecentes().length }} secas mais recentes.</p>
+            <div class="grafico-incendios">
+              @for (seca of getSecasRecentes(); track seca.data) {
+                <div
+                  class="barra-incendio"
+                  [style.height.%]="getAlturaBarra(seca.duracao)"
+                >
+                  <h3>{{ formatarTempo(seca.duracao) }}</h3>
+
+                  <div class="barra-cor">
+                  </div>
+
+                  <p>{{ formatarData(seca.data) }}</p>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
     }
   </div>
 </div>

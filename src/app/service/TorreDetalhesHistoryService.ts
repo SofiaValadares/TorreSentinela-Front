@@ -2,7 +2,7 @@ import { Injectable, signal, WritableSignal } from '@angular/core';
 import {
   TorreSentinelaData,
   TorreSentinelaHistory,
-  TorreSentinelaChuva
+  TorreSentinelaDataInterval
 } from '../model/TorreSentinela';
 
 @Injectable({
@@ -20,15 +20,49 @@ export class TorreDetalhesHistoryService {
         t => t.torreSentinela.torreIP === torre.torreIP
       );
 
-      const tempoSemChuva = torre.tempoSemChuva ?? 0;
+      // ============================================================
+      // CASO ESPECIAL: sem leitura válida (tempoSemChuva = null/erro)
+      // Só atualiza dados, não registra chuva ou seca
+      // ============================================================
+      if (torre.tempoSemChuva == null) {
+        if (index === -1) {
+          const novoHistorico: TorreSentinelaHistory = {
+            torreSentinela: torre,
+            dataAdd: agora,
+            historyChuvas: [],
+            historySecas: [],
+            chovendoAgora: false,
+            inicioChuvaAtual: null,
+            inicioSecaAtual: agora
+          };
+          return [...listaAtual, novoHistorico];
+        }
+
+        const historicoExistente = listaAtual[index];
+        const historicoAtualizado: TorreSentinelaHistory = {
+          ...historicoExistente,
+          torreSentinela: { ...torre }
+        };
+
+        const novaLista = [...listaAtual];
+        novaLista[index] = historicoAtualizado;
+        return novaLista;
+      }
+
+      // ============================================================
+      // Temos uma leitura válida
+      // ============================================================
+      const tempoSemChuva = torre.tempoSemChuva;
 
       if (index === -1) {
         const novoHistorico: TorreSentinelaHistory = {
           torreSentinela: torre,
           dataAdd: agora,
           historyChuvas: [],
-          chovendoAgora: false,
-          inicioChuvaAtual: null
+          historySecas: [],
+          chovendoAgora: tempoSemChuva === 0,
+          inicioChuvaAtual: tempoSemChuva === 0 ? agora : null,
+          inicioSecaAtual: tempoSemChuva > 0 ? agora : null
         };
 
         return [...listaAtual, novoHistorico];
@@ -40,32 +74,70 @@ export class TorreDetalhesHistoryService {
         torreSentinela: { ...torre }
       };
 
+      // ============================================================
+      // REGISTRO DE CHUVA
+      // ============================================================
       if (tempoSemChuva === 0) {
+        // Início de chuva
         if (!historicoAtualizado.chovendoAgora) {
           historicoAtualizado.chovendoAgora = true;
           historicoAtualizado.inicioChuvaAtual = agora;
         }
+
+        // Se estava seco, finaliza a seca e registra
+        if (
+          historicoAtualizado.inicioSecaAtual &&
+          historicoAtualizado.inicioSecaAtual < agora
+        ) {
+          const duracaoSeca = Math.floor(
+            (agora - historicoAtualizado.inicioSecaAtual) / 1000
+          );
+
+          const novaSeca: TorreSentinelaDataInterval = {
+            data: historicoAtualizado.inicioSecaAtual,
+            duracao: duracaoSeca
+          };
+
+          historicoAtualizado.historySecas = [
+            ...historicoAtualizado.historySecas,
+            novaSeca
+          ];
+
+          historicoAtualizado.inicioSecaAtual = null;
+        }
       }
 
+      // ============================================================
+      // REGISTRO DE SECA (tempoSemChuva > 0)
+      // ============================================================
       if (tempoSemChuva > 0) {
-        if (historicoAtualizado.chovendoAgora && historicoAtualizado.inicioChuvaAtual) {
-          const duracaoSegundos = Math.floor(
+        // Se estava chovendo, encerra chuva e registra
+        if (
+          historicoAtualizado.chovendoAgora &&
+          historicoAtualizado.inicioChuvaAtual
+        ) {
+          const duracaoChuva = Math.floor(
             (agora - historicoAtualizado.inicioChuvaAtual) / 1000
           );
 
-          const novoRegistroChuva: TorreSentinelaChuva = {
+          const novaChuva: TorreSentinelaDataInterval = {
             data: historicoAtualizado.inicioChuvaAtual,
-            duracao: duracaoSegundos
+            duracao: duracaoChuva
           };
 
           historicoAtualizado.historyChuvas = [
             ...historicoAtualizado.historyChuvas,
-            novoRegistroChuva
+            novaChuva
           ];
         }
 
         historicoAtualizado.chovendoAgora = false;
         historicoAtualizado.inicioChuvaAtual = null;
+
+        // Se não estava seco, inicia seca
+        if (!historicoAtualizado.inicioSecaAtual) {
+          historicoAtualizado.inicioSecaAtual = agora;
+        }
       }
 
       const novaLista = [...listaAtual];

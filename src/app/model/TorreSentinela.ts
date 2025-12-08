@@ -3,9 +3,10 @@ export interface TorreSentinelaData {
   latitude: number;
   longitude: number;
   tempoSemChuva?: number;
+  erroCode?: string;
 }
 
-export interface TorreSentinelaChuva {
+export interface TorreSentinelaDataInterval {
   data: number;
   duracao: number;
 }
@@ -13,8 +14,10 @@ export interface TorreSentinelaChuva {
 export interface TorreSentinelaHistory {
   torreSentinela: TorreSentinelaData;
   dataAdd: number;
-  historyChuvas: TorreSentinelaChuva[];
+  historyChuvas: TorreSentinelaDataInterval[];
+  historySecas: TorreSentinelaDataInterval[];
 
   chovendoAgora?: boolean;
   inicioChuvaAtual?: number | null;
+  inicioSecaAtual?: number | null;
 }

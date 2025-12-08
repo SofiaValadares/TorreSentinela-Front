@@ -35,10 +35,10 @@
           <p>{{torre.longitude}}</p>
         </div>
         <div class="cell">
-          <p>{{ torre.tempoSemChuva != null ? formatarDataSimples(torre.tempoSemChuva) : 'carregando...' }}</p>
+          <p>{{ torre.erroCode ? torre.erroCode : torre.tempoSemChuva != null ? formatarDataSimples(torre.tempoSemChuva) : 'carregando...' }}</p>
         </div>
         <div class="cellButton">
-          <button class="details" (click)="openModalDetailsTorre(torre)">
+          <button class="details" (click)="openModalDetailsTorre(torre)" [disabled]="torre.erroCode">
             <mat-icon aria-hidden="false" aria-label="Icon Delete" fontIcon="menu"></mat-icon>
           </button>
           <button class="delete" (click)="onClickRemoveTorre(torre.torreIP)">

@@ -1,9 +1,14 @@
-import { Component } from '@angular/core';
-import { ModalDetailsService } from '../../service/ModalDetailsService';
-import { MatIconModule } from '@angular/material/icon';
-import { TorreDetalhesHistoryService } from '../../service/TorreDetalhesHistoryService';
-import {TorreSentinelaChuva, TorreSentinelaHistory} from '../../model/TorreSentinela';
+import {Component} from '@angular/core';
+import {ModalDetailsService} from '../../service/ModalDetailsService';
+import {MatIconModule} from '@angular/material/icon';
+import {TorreDetalhesHistoryService} from '../../service/TorreDetalhesHistoryService';
+import {TorreSentinelaDataInterval, TorreSentinelaHistory} from '../../model/TorreSentinela';
 import {formatarDataFromMs, formatarDataHoraFromMs, formatarHoraFromS} from '../../utils/DataFormater';
+
+export enum tabelas {
+  CHUVA,
+  SECA
+}
 
 @Component({
   selector: 'app-modal-details',
@@ -13,6 +18,7 @@ import {formatarDataFromMs, formatarDataHoraFromMs, formatarHoraFromS} from '../
 })
 export class ModalDetails {
   detalhesTorre?: TorreSentinelaHistory;
+  tabelaAtiva: tabelas = tabelas.CHUVA;
 
   constructor(
     public modalDetails: ModalDetailsService,
@@ -39,7 +45,19 @@ export class ModalDetails {
     this.modalDetails.close();
   }
 
-  getDataAddString () : string {
+  onClickChuvas() {
+    this.tabelaAtiva = tabelas.CHUVA;
+  }
+
+  onClickSecas() {
+    this.tabelaAtiva = tabelas.SECA;
+  }
+
+  isTabelaAtiva(tabelaAtiva: tabelas): boolean {
+    return this.tabelaAtiva === tabelaAtiva;
+  }
+
+  getDataAddString(): string {
     if (!this.detalhesTorre) {
       return '';
     }
@@ -47,7 +65,7 @@ export class ModalDetails {
     return formatarDataHoraFromMs(this.detalhesTorre.dataAdd);
   }
 
-  getChuvas(): TorreSentinelaChuva[] {
+  getChuvas(): TorreSentinelaDataInterval[] {
     return this.detalhesTorre?.historyChuvas ?? [];
   }
 
@@ -58,10 +76,26 @@ export class ModalDetails {
       .slice(0, 10);
   }
 
+  getSecas(): TorreSentinelaDataInterval[] {
+    return this.detalhesTorre?.historySecas ?? [];
+  }
+
+  getSecasRecentes() {
+    if (!this.detalhesTorre) return [];
+    return [...this.detalhesTorre.historySecas]
+      .sort((a, b) => b.data - a.data)
+      .slice(0, 10);
+  }
+
   getMaxDuracao(): number {
-    const chuvas = this.getChuvasRecentes();
-    if (!chuvas.length) return 0;
-    return chuvas.reduce((max, inc) => inc.duracao > max ? inc.duracao : max, 0);
+    if (this.tabelaAtiva == tabelas.CHUVA) {
+      const chuvas = this.getChuvasRecentes();
+      if (!chuvas.length) return 0;
+      return chuvas.reduce((max, inc) => inc.duracao > max ? inc.duracao : max, 0);
+    }
+    const secas = this.getSecasRecentes();
+    if (!secas.length) return 0;
+    return secas.reduce((max, inc) => inc.duracao > max ? inc.duracao : max, 0);
   }
 
   getAlturaBarra(duracao: number): number {
@@ -74,7 +108,9 @@ export class ModalDetails {
     return formatarDataFromMs(timestamp);
   }
 
-  formatarTempo (tempo: number): string {
+  formatarTempo(tempo: number): string {
     return formatarHoraFromS(tempo);
   }
+
+  protected readonly tabelas = tabelas;
 }

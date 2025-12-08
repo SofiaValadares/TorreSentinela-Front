@@ -1,13 +1,14 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { TorreSentinelaData } from '../model/TorreSentinela';
-import {TorreDetalhesHistoryService} from './TorreDetalhesHistoryService';
+import { TorreDetalhesHistoryService } from './TorreDetalhesHistoryService';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TorresSentinelaService {
-  listaTorres: WritableSignal<TorreSentinelaData[]> = signal<TorreSentinelaData[]>([]);
+  listaTorres: WritableSignal<TorreSentinelaData[]> =
+    signal<TorreSentinelaData[]>([]);
 
   private pollingTimers = new Map<string, number>();
 
@@ -19,6 +20,7 @@ export class TorresSentinelaService {
   addTorre(torre: TorreSentinelaData): void {
     this.listaTorres.update(listaAtual => [...listaAtual, torre]);
 
+    // primeira leitura: só registra estado inicial
     this.detalhesHistory.registrarLeituraTorre(torre);
 
     this.startPollingTorre(torre.torreIP);
@@ -53,7 +55,8 @@ export class TorresSentinelaService {
                 if (torre.torreIP === torreIP) {
                   torreAtualizada = {
                     ...torre,
-                    tempoSemChuva: res.tempo_sem_chuva
+                    tempoSemChuva: res.tempo_sem_chuva,
+                    erroCode: undefined // limpa erro se voltar ao normal
                   };
                   return torreAtualizada;
                 }
@@ -65,8 +68,31 @@ export class TorresSentinelaService {
               this.detalhesHistory.registrarLeituraTorre(torreAtualizada);
             }
           },
-          error: (err) => {
-            console.error('Erro ao buscar tempo_sem_chuva da torre', torreIP, err);
+          error: (err: HttpErrorResponse) => {
+            const erroMessage = this.formatError(err);
+            console.error(
+              'Erro ao buscar tempo_sem_chuva da torre',
+              torreIP,
+              erroMessage
+            );
+
+            // Atualiza só o erro na torre, sem mexer no tempoSemChuva
+            this.listaTorres.update(lista =>
+              lista.map(torre => {
+                if (torre.torreIP === torreIP) {
+                  return {
+                    ...torre,
+                    erroCode: erroMessage
+                  };
+                }
+                return torre;
+              })
+            );
+
+            // 👉 Se quiser registrar no histórico mesmo com erro,
+            // você pode chamar aqui:
+            // const torre = this.listaTorres().find(t => t.torreIP === torreIP);
+            // if (torre) this.detalhesHistory.registrarLeituraTorre(torre);
           }
         });
     }, 2000);
@@ -85,5 +111,18 @@ export class TorresSentinelaService {
   stopAllPolling(): void {
     this.pollingTimers.forEach((id) => clearInterval(id));
     this.pollingTimers.clear();
+  }
+
+  // ---------- helpers ----------
+
+  private formatError(err: HttpErrorResponse | any): string {
+    if (err instanceof HttpErrorResponse) {
+      if (err.status === 0) {
+        return 'Falha na conexao.';
+      }
+      return `Erro HTTP ${err.status}'}`;
+    }
+
+    return 'Erro inesperado ao consultar torre.';
   }
 }

@@ -51,6 +51,33 @@
     }
   }
 
+  .abas-tables {
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+
+    button {
+      border: none;
+      border-bottom: 2px solid darkslategray;
+      background: transparent;
+      color: darkslategray;
+      width: 50%;
+    }
+
+    button:hover {
+      cursor: pointer;
+      opacity: 0.6;
+      color: darkslategray !important;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      border-color: #666666;
+      color: #666666;
+    }
+  }
+
   .grafico-container {
     margin-top: 30px;
     flex: 1;
