@@ -8,14 +8,14 @@
       </button>
     </div>
 
-    <p>Monitorando desde {{ getDataAddString() }}, com um total de {{ getChuvas().length }} chuvas já registradas.</p>
+    <p>Monitorando desde {{ getDataAddString() }}.</p>
 
     <div class="abas-tables">
       <button [disabled]="isTabelaAtiva(tabelas.CHUVA)" (click)="onClickChuvas()">
-        <h3>CHUVAS</h3>
+        <h3>CHUVAS {{getChuvas().length}}</h3>
       </button>
       <button [disabled]="isTabelaAtiva(tabelas.SECA)" (click)="onClickSecas()">
-        <h3>SECAS</h3>
+        <h3>SECAS {{getSecas().length}}</h3>
       </button>
     </div>
 
